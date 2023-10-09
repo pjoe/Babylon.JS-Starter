@@ -4,7 +4,9 @@ import {
   HemisphericLight,
   MeshBuilder,
   Scene,
-  Vector3
+  StandardMaterial,
+  Texture,
+  Vector3,
 } from "@babylonjs/core";
 
 const canvas = document.getElementById("renderCanvas"); // Get the canvas element
@@ -26,7 +28,7 @@ const createScene = function () {
   const sphere = MeshBuilder.CreateSphere(
     "sphere",
     { diameter: 2, segments: 32 },
-    scene
+    scene,
   );
   // Move the sphere upward 1/2 its height
   sphere.position.y = 1;
@@ -34,11 +36,15 @@ const createScene = function () {
   const ground = MeshBuilder.CreateGround(
     "ground",
     { width: 6, height: 6 },
-    scene
+    scene,
   );
-  void ground;
+  const groundMat = new StandardMaterial("groundMat", scene);
+  groundMat.diffuseTexture = new Texture("/textures/testpattern.png", scene);
+  ground.material = groundMat;
+
   return scene;
 };
+
 const scene = createScene(); //Call the createScene function
 // Register a render loop to repeatedly render the scene
 engine.runRenderLoop(function () {
